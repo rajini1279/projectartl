@@ -1,0 +1,119 @@
+<project  name="ApexOnlineDevops"  default="Task4" basedir=".">
+	 <description>
+	   This is my first build.xml for Project1- application1
+	 </description>
+	 <property file="./build.properties"/>
+	 <target name="ant compress 1">
+			<ant antfile="./build_1.xml" target="compress"/>
+	</target>
+	 
+<!-- property name="src.dir" value="./source" />
+<property name="build.dir" value="./target" />
+<property name="dev.env" value="10.10.10.1" />
+<property name="aat.env" value="10.10.10.2" />
+<property name="sit.env" value="10.10.10.3" />
+<property name="src.dir1" value="./source1" />
+<property name="build.dir1" value="./target1" />
+<property name="dev.env1" value="10.10.10.11" />
+<property name="aat.env1" value="10.10.10.21" />
+<property name="sit.env1" value="10.10.10.31" />
+<property name="github.url" value="https://github.com/sarithasiri/AirtelBaseCode.git" / -->
+
+	<target name="Main" depends="Clone,Tasks2">
+	  <echo> [Task1] Pull the code from Remote Repository </echo>
+	  <echo> [Task3] Complie java source </echo>
+	  <echo> [Task4] Create a dcouments/Reports </echo>
+	  <echo> [Task5] Zip/bundle/tar/Arhive task</echo>
+	  <echo> [Task6] Clean up directories from Task2 </echo>
+	  <echo> [Task7] Deploy at targent env </echo>
+	
+	</target>
+	
+	<!-- env  is a linux command display all the enviornment variables of that user
+	echo $PATH
+	JAVA_HOME
+	ANT_HOME -->
+	<!-- target name="LunchNotepad" >
+			<echo> [Task1] Pull the code from Remote Repository </echo>
+			<exec executable="notepad">
+			   <arg line="clone https://github.com/sarithasiri/AirtelBaseCode.git"/>
+			</exec>
+		</target -->
+		
+	  <target name="Clone" >
+		<echo> ${src.dir} </echo>
+	   <echo> ${dev.env}  </echo>
+	   <echo>${user} </echo>
+			<exec executable="git">
+			   <!-- arg line="version" / -->
+			   <arg line="clone ${github.url}"/>
+			</exec>
+			<!--  executable="git">
+			   <arg line="git pull"/ >
+			</exec -->
+		</target>
+		
+		<target name="Tasks2">
+			<echo> [Task2] Creating/Delete/Copy task </echo>
+			<copy file="build.xml" tofile="build.txt" />
+			<copy file="build.xml" todir="./AirtelBaseCode" />
+			
+			<copy todir="./src" >
+				<fileset dir="./AirtelBaseCode/" >
+					<!-- include name="*.txt"/ -->
+					<exclude name="*.xml"/>
+				</fileset>
+			</copy>
+			
+		</target>
+		
+		<target name="Task3" >
+			<echo> [Task3 and 4] JavaDevelopmentKit -- javac, java, javadoc, jar </echo>
+			<mkdir dir="classes" />
+			<mkdir dir="report" />
+			<javac srcdir="./src" destdir="./classes/" classpath="./lib/javark.jar" />
+			
+			<!-- javac srcdir="${src}"
+       destdir="${build}"
+       includes="mypackage/p1/**,mypackage/p2/**"
+       excludes="mypackage/p1/testpackage/**"
+       classpath="xyz.jar"
+       debug="on"/ -->
+		</target>
+		
+		<target name="Task4" depends="Task3">
+		<javadoc packagenames="*"
+         sourcepath="./src"
+         defaultexcludes=""
+         destdir="./report"
+         author="true"
+         version="true"
+         use="true"
+         windowtitle="Test API">
+  <doctitle><![CDATA[<h1>Test</h1>]]></doctitle>
+  <bottom><![CDATA[<i>Copyright &#169; 2000 Dummy Corp. All Rights Reserved.</i>]]></bottom>
+  <tag name="todo" scope="all" description="To do:"/>
+  <!-- group title="Group 1 Packages" packages="com.mkyong.awt.*"/ -->
+  <!-- group title="Group 2 Packages" packages="com.mkyong.awtb*:com.mkyong.awtc*"/ -->
+  <!--link offline="true" href="https://docs.oracle.com/javase/8/docs/api/" packagelistLoc="C:\tmp"/>
+  <link href="https://docs.oracle.com/javase/8/docs/api/"/-->
+</javadoc>
+	</target>
+	<target name="archive" depends="Task3">
+	<zip destfile="sample.zip"
+     basedir="./classes"
+	 />
+	 </target>
+	 
+	 <target name="deploy" depends="archive">
+	 <!-- todir="rgundala11:admin123@52.90.69.189:/home/rgundala11" 
+	 	 knownhosts="/home/ec2-user/.ssh/id_rsa"  -->
+	 
+	 <scp file="sample.zip"
+     todir="ec2-user@18.205.160.176:/home/ec2-user"
+	 keyfile="Taining_Repository.pem"
+	 trust="yes"/>
+	 
+	 
+	</target>
+</project>
