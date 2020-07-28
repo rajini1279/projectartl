@@ -1,4 +1,4 @@
-<project  name="ApexOnlineDevops"  default="Task4" basedir=".">
+<project  name="ApexOnlineDevops"  default="Main" basedir=".">
 	 <description>
 	   This is my first build.xml for Project1- application1
 	 </description>
@@ -33,6 +33,7 @@
 	echo $PATH
 	JAVA_HOME
 	ANT_HOME -->
+	
 	<!-- target name="LunchNotepad" >
 			<echo> [Task1] Pull the code from Remote Repository </echo>
 			<exec executable="notepad">
